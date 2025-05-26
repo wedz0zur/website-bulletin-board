@@ -29,7 +29,7 @@ const upload = multer({
 
     },
     limits: {
-        fileSize: 1024 * 1024 * 2 // Макс размеер  2 мб
+        fileSize: 1024 * 1024 * 4 // Макс размеер  4 мб
     }
 });
 

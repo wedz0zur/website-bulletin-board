@@ -6,7 +6,7 @@ const User = new Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   registrationDate: { type: Date, default: Date.now },
-  avatar: {type: String, default: 'uploads/not_img.jpg'},
+  avatar: {type: String, default: 'uploads/not-avatar.png'},
   roles: [{type: String, ref: "Role"}]
 });
 

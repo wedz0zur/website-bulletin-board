@@ -55,8 +55,7 @@ class authController {
         roles: [userRole.value],
       });
       if (req.file) {
-        // console.log(req.file);
-
+        console.log(req.file);
         user.avatar = req.file.path;
       }
 
