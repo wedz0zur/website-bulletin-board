@@ -1,0 +1,387 @@
+.avito-post-page {
+  font-family: 'Roboto', Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+}
+
+.avito-post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avito-back-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #3366cc;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f0f5ff;
+  }
+}
+
+.avito-back-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  fill: #3366cc;
+}
+
+.avito-page-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.avito-post-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.avito-gallery {
+  flex: 1;
+  max-width: 600px;
+
+  @media (min-width: 768px) {
+    position: sticky;
+    top: 20px;
+  }
+}
+
+.avito-main-image {
+  width: 100%;
+  height: 400px;
+  background: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.avito-product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.avito-thumbnail-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.avito-thumbnail {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  object-fit: cover;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #3366cc;
+  }
+
+  &.avito-active {
+    border-color: #3366cc;
+    border-width: 2px;
+  }
+}
+
+.avito-product-info {
+  flex: 1;
+  max-width: 600px;
+}
+
+.avito-product-header {
+  margin-bottom: 20px;
+}
+
+.avito-post-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.avito-price-section {
+  margin-bottom: 15px;
+}
+
+.avito-current-price {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.avito-product-meta {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.avito-meta-item {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.avito-meta-label {
+  color: #666;
+  min-width: 140px;
+}
+
+.avito-meta-value {
+  color: #333;
+}
+
+.avito-product-description {
+  margin-bottom: 25px;
+}
+
+.avito-description-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.avito-post-description {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.avito-no-description {
+  color: #999;
+  font-style: italic;
+}
+
+.avito-show-more {
+  color: #3366cc;
+  text-decoration: none;
+  font-size: 15px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.avito-section-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.avito-characteristics {
+  margin-bottom: 25px;
+}
+
+.avito-characteristics-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.avito-characteristics-item {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.avito-characteristics-key {
+  color: #666;
+  min-width: 160px;
+}
+
+.avito-characteristics-value {
+  color: #333;
+}
+
+.avito-contact-section {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.avito-contact-info {
+  font-size: 15px;
+}
+
+.avito-contact-item {
+  display: flex;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.avito-contact-label {
+  color: #666;
+  min-width: 60px;
+}
+
+.avito-contact-value {
+  color: #333;
+}
+
+.avito-product-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.avito-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+
+  &-edit {
+    background-color: #3366cc;
+    color: white;
+
+    &:hover {
+      background-color: #2a56a7;
+    }
+  }
+
+  &-delete {
+    background-color: #f0f0f0;
+    color: #333;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+
+  &-confirm {
+    background-color: #ff4d4d;
+    color: white;
+
+    &:hover {
+      background-color: #e04545;
+    }
+  }
+
+  &-cancel {
+    background-color: #f0f0f0;
+    color: #333;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+
+  &-save {
+    background-color: #4CAF50;
+    color: white;
+
+    &:hover {
+      background-color: #3e8e41;
+    }
+  }
+}
+
+.avito-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.avito-modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.avito-modal-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.avito-modal-text {
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.avito-modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.avito-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.avito-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.avito-form-label {
+  font-size: 15px;
+  color: #666;
+}
+
+.avito-form-input, .avito-form-textarea {
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #3366cc;
+    outline: none;
+  }
+}
+
+.avito-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}

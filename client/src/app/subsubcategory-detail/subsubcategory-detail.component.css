@@ -1,0 +1,249 @@
+/* Общий контейнер формы */
+.ad-creation-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок */
+.ad-creation-title {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Информация о категории */
+.category-info {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.category-info p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Сообщение об ошибке */
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Форма */
+.ad-creation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Поля формы */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.required-marker {
+  color: #d32f2f;
+  margin-left: 4px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.currency-select {
+  width: 80px;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-size: 14px;
+}
+
+/* Поле загрузки файлов */
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.file-upload input[type="file"] {
+  display: none;
+}
+
+.file-upload-button {
+  padding: 10px 16px;
+  background-color: #1976d2;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.file-upload-button:hover {
+  background-color: #1565c0;
+}
+
+.file-upload-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.file-hint {
+  font-size: 14px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* Чекбоксы для способов связи */
+.contact-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.checkbox-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Кнопки действий */
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submit-button,
+.draft-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.submit-button:hover {
+  background-color: #1565c0;
+}
+
+.submit-button:disabled {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}
+
+.draft-button {
+  background-color: #78909c;
+  color: #fff;
+}
+
+.draft-button:hover {
+  background-color: #607d8b;
+}
+
+/* Сообщение о пустых полях */
+.empty-message {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  .ad-creation-container {
+    padding: 10px;
+  }
+
+  .ad-creation-title {
+    font-size: 20px;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    font-size: 14px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .submit-button,
+  .draft-button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,180 @@
+<header>
+  <nav class="header_nav">
+    <a
+      routerLink="/forBisnes"
+      routerLinkActive="active"
+      arriaCurrentWhenActive="page"
+      >Для бизнеса</a
+    >
+    <a
+      routerLink="/career"
+      routerLinkActive="active"
+      arriaCurrentWhenActive="page"
+      >Карьера</a
+    >
+    <a
+      routerLink="/help"
+      routerLinkActive="active"
+      arriaCurrentWhenActive="page"
+      >Помощь</a
+    >
+  </nav>
+
+  <div class="registration-svg">
+    <div class="svg">
+      <img src="./image/header_img/heart.svg" alt="" class="heart" />
+      <div class="basket"></div>
+    </div>
+    <div *ngIf="!user; else loggedIn" class="registration" (click)="setModal()">
+      Вход и регистрация
+    </div>
+
+    <ng-template #loggedIn>
+      <div class="profile-info">
+        <a routerLink="/profile">
+          <img
+            [src]="'http://localhost:777/' + user.avatar"
+            class="avatar-img"
+          />
+        </a>
+      </div>
+    </ng-template>
+    <button *ngIf="user" class="place_ads" (click)="routeAdd()">
+      Разместить объявление
+    </button>
+  </div>
+</header>
+
+<div class="auth-backdrop" *ngIf="modal" (click)="closeModal($event)">
+  <div class="auth-container" (click)="$event.stopPropagation()">
+    <div class="auth-tabs">
+      <button
+        [class.active]="activeTab === 'register'"
+        (click)="activeTab = 'register'"
+      >
+        Регистрация
+      </button>
+      <button
+        [class.active]="activeTab === 'login'"
+        (click)="activeTab = 'login'"
+      >
+        Вход
+      </button>
+    </div>
+    <div class="success-message" *ngIf="showSuccessMessage">
+      Регистрация прошла успешно!
+    </div>
+    <div class="auth-form" *ngIf="activeTab === 'register'">
+      <h2>Создать аккаунт</h2>
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Имя"
+          class="form-input"
+          [(ngModel)]="userName"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-user"></i>
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Логин"
+          class="form-input"
+          [(ngModel)]="userLogin"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-user"></i>
+      </div>
+      <div class="form-group">
+        <input
+          type="email"
+          placeholder="Email"
+          class="form-input"
+          [(ngModel)]="userEmail"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-email"></i>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          placeholder="Пароль"
+          class="form-input"
+          [(ngModel)]="userPassword"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-lock"></i>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          placeholder="Подтвердите пароль"
+          class="form-input"
+          [(ngModel)]="userCheckPassword"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-lock"></i>
+      </div>
+      <div class="form-group">
+        <label for="userAvatar">Изображение:</label>
+        <input
+          type="file"
+          id="userAvatar"
+          (change)="onfileAvatarSelected($event)"
+          class="form-input"
+          multiple
+        />
+      </div>
+      <p style="color: red" class="error-message">
+        {{ errorPassword }}
+      </p>
+      <p style="color: red">{{ errorValid }}</p>
+
+      <p class="error-message">{{ error }}</p>
+      <button (click)="registration()" class="auth-button">
+        {{ isSubmitting ? "Регистрация..." : "Зарегистрироваться" }}
+      </button>
+      <div class="auth-divider">или</div>
+      <button class="social-button google">Продолжить с Google</button>
+    </div>
+
+    <div class="auth-form" *ngIf="activeTab === 'login'">
+      <div class="success-message" *ngIf="showSuccessMessage">
+        Вход выполнен успешно!
+      </div>
+      <h2>Войти в аккаунт</h2>
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Ваш Login"
+          class="form-input"
+          [(ngModel)]="userLogin"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-user"></i>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          placeholder="Пароль"
+          class="form-input"
+          [(ngModel)]="userPassword"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <i class="icon-lock"></i>
+      </div>
+      <div class="auth-options">
+        <label class="remember-me">
+          <input type="checkbox" /> Запомнить меня
+        </label>
+        <a href="#" class="forgot-password">Забыли пароль?</a>
+      </div>
+      <button (click)="login()" class="auth-button" [disabled]="isSubmitting">
+        {{ isSubmitting ? "Загрузка..." : "Войти" }}
+      </button>
+      <div class="auth-divider">или</div>
+      <button class="social-button google">Продолжить с Google</button>
+    </div>
+  </div>
+</div>

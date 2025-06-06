@@ -1,0 +1,150 @@
+<div class="avito-post-page">
+  <div class="avito-post-header">
+    <button class="avito-back-button" (click)="goBack()">
+      <svg class="avito-back-icon" viewBox="0 0 24 24">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+      </svg>
+      Назад
+    </button>
+    <h1 class="avito-page-title">Объявление</h1>
+  </div>
+
+  <div class="avito-post-container" *ngIf="post">
+    <!-- Галерея -->
+    <div class="avito-gallery">
+      <div class="avito-main-image">
+        <img [src]="`http://localhost:777/${post.image[activeImage]}`" class="avito-product-image" />
+      </div>
+      <div class="avito-thumbnail-list" *ngIf="post.image?.length > 1">
+        <img
+          *ngFor="let img of post.image; index as i"
+          [src]="`http://localhost:777/${img}`"
+          [class.avito-active]="i === activeImage"
+          (click)="activeImage = i"
+          class="avito-thumbnail"
+        />
+      </div>
+    </div>
+
+    <!-- Основная информация -->
+    <div class="avito-product-info">
+      <div class="avito-product-header">
+        <h1 class="avito-post-title">{{ post.title }}</h1>
+        <div class="avito-price-section">
+          <span class="avito-current-price">{{ post.price | number }} ₽</span>
+        </div>
+      </div>
+
+      <div class="avito-product-meta">
+        <div class="avito-meta-item">
+          <span class="avito-meta-label">Город:</span> 
+          <span class="avito-meta-value">{{ post.location || 'Не указан' }}</span>
+        </div>
+        <div class="avito-meta-item">
+          <span class="avito-meta-label">Дата размещения:</span>
+          <span class="avito-meta-value">{{ post.createdAt | date: 'dd.MM.yyyy' }}</span>
+        </div>
+        <div class="avito-meta-item" *ngIf="post.category">
+          <span class="avito-meta-label">Категория:</span>
+          <span class="avito-meta-value">{{ post.category }} / {{ post.subcategory }} / {{ post.subsubcategory }}</span>
+        </div>
+      </div>
+
+      <!-- Описание -->
+      <div class="avito-product-description">
+        <h3 class="avito-description-title">Описание</h3>
+        <div class="avito-description-content">
+          <p class="avito-post-description" *ngIf="post.description">
+            <span *ngIf="!showDescription" class="avito-truncated-description">
+              {{ post.description | slice: 0: 100 }}
+              <span *ngIf="post.description.length > 100">...</span>
+            </span>
+            <span *ngIf="showDescription">{{ post.description }}</span>
+          </p>
+          <p *ngIf="!post.description" class="avito-no-description">Описание отсутствует</p>
+          <a
+            *ngIf="post.description && post.description.length > 100"
+            href="javascript:void(0)"
+            (click)="toggleDescription()"
+            class="avito-show-more"
+          >
+            {{ showDescription ? "Скрыть" : "Показать всё" }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Характеристики -->
+      <div *ngIf="post.additional_fields && objectKeys(post.additional_fields).length" class="avito-characteristics">
+        <h3 class="avito-section-title">Характеристики</h3>
+        <ul class="avito-characteristics-list">
+          <li *ngFor="let key of objectKeys(post.additional_fields)" class="avito-characteristics-item">
+            <span class="avito-characteristics-key">{{ key }}:</span> 
+            <span class="avito-characteristics-value">{{ post.additional_fields[key] }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Контакты -->
+      <div class="avito-contact-section">
+        <h3 class="avito-section-title">Контактная информация</h3>
+        <div class="avito-contact-info">
+          <p class="avito-contact-item">
+            <span class="avito-contact-label">Имя:</span> 
+            <span class="avito-contact-value">{{ post.contact_name }}</span>
+          </p>
+          <p *ngFor="let method of post.contact_methods" class="avito-contact-item">
+            <span class="avito-contact-label">Связь:</span> 
+            <span class="avito-contact-value">{{ method }}</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Действия -->
+      <div class="avito-product-actions">
+        <button *ngIf="isAuthor && isAuthenticated()" (click)="confirmDelete()" class="avito-button avito-button-delete">
+          Удалить публикацию
+        </button>
+        <button *ngIf="isAuthor && isAuthenticated()" (click)="openEditModal()" class="avito-button avito-button-edit">
+          Изменить публикацию
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка удаления -->
+  <div class="avito-modal" *ngIf="showDeleteModal">
+    <div class="avito-modal-content">
+      <h2 class="avito-modal-title">Подтверждение удаления</h2>
+      <p class="avito-modal-text">Вы уверены, что хотите удалить объявление "{{ post.title }}"?</p>
+      <div class="avito-modal-actions">
+        <button (click)="delPost(post._id)" class="avito-button avito-button-confirm">Да, удалить</button>
+        <button (click)="cancelDelete()" class="avito-button avito-button-cancel">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка редактирования -->
+  <div class="avito-modal" *ngIf="showEditModal">
+    <div class="avito-modal-content">
+      <h2 class="avito-modal-title">Редактировать объявление</h2>
+      <form #editForm="ngForm" class="avito-edit-form">
+        <div class="avito-form-group">
+          <label class="avito-form-label">Название:</label>
+          <input [(ngModel)]="title" name="title" required class="avito-form-input" />
+        </div>
+        <div class="avito-form-group">
+          <label class="avito-form-label">Цена:</label>
+          <input type="number" [(ngModel)]="price" name="price" required class="avito-form-input" />
+        </div>
+        <div class="avito-form-group">
+          <label class="avito-form-label">Описание:</label>
+          <textarea [(ngModel)]="description" name="description" rows="5" class="avito-form-textarea"></textarea>
+        </div>
+        <div class="avito-modal-actions">
+          <button (click)="saveEdit()" [disabled]="!editForm.form.valid" class="avito-button avito-button-save">Сохранить</button>
+          <button (click)="cancelEdit()" type="button" class="avito-button avito-button-cancel">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

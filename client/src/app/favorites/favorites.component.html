@@ -1,0 +1,50 @@
+<div class="favorites-container">
+  <h2 class="favorites-title">Избранные посты</h2>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <span>Загрузка...</span>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && favoritePosts.length === 0" class="empty-state">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <p>Вы не добавили ни одного поста в избранное</p>
+  </div>
+
+  <div class="favorites-grid">
+    <div *ngFor="let post of favoritePosts" class="favorite-post-card">
+      <div class="card-image" (click)="goToProduct(post._id)">
+        <img [src]="'http://localhost:777/' + post.image[0]" alt="{{post.title}}" />
+      </div>
+      <div class="post-info">
+        <h3 (click)="goToProduct(post._id)">{{ post.title | truncate: 30 }}</h3>
+        <p class="price">{{ post.price }} ₽</p>
+        <button class="remove-button" (click)="confirmDelete(post._id, $event)">
+          Удалить из избранного
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="showConfirmModal">
+  <div class="modal">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+    <p>Вы уверены, что хотите удалить этот пост из избранного?</p>
+    <div class="modal-actions">
+      <button class="confirm-button" (click)="removeFavorite(confirmedPostId!)">Да, удалить</button>
+      <button class="cancel-button" (click)="cancelDelete()">Отмена</button>
+    </div>
+  </div>
+</div>

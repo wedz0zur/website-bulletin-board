@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  padding: 20px;
+  width: 70%;
+  margin: auto;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.categories-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.advert-table {
+  max-width: 300px;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.advert-table tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 50px;
+  max-height: 50px;
+  min-height: 50px;
+  box-sizing: border-box;
+}
+
+.advert-table tr:hover {
+  background-color: #f2f1f0;
+}
+
+.advert-table tr.selected {
+  background-color: #f2f1f0;
+}
+
+
+.advert-table td {
+  padding: 0 20px;
+  font-size: 16px;
+  height: 50px;
+  line-height: 50px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.advert-table td:first-child {
+  color: #333;
+}
+
+/* .advert-table td:last-child {
+  text-align: right;
+  color: #999;
+} */
+
+.arrow {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.advert-table2{
+  height: 200px;
+}

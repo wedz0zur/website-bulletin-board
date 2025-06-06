@@ -1,0 +1,46 @@
+<head>
+  <title>Новое объявление</title>
+</head>
+
+<body>
+  <h1>Новое объявление</h1>
+
+  <div class="categories-container">
+    <table class="advert-table advert-table1">
+      <tr
+        *ngFor="let category of categories"
+        [class.selected]="selectedCategory === category.name"
+        (click)="selectCategory(category.name)"
+      >
+        <td style="width: 270px">{{ category.name }}</td>
+        <td class="arrow"><img width="20" src="./image/arrow.svg" alt="" /></td>
+      </tr>
+    </table>
+
+    <table
+      class="advert-table advert-table2"
+      *ngIf="showSubcategories && selectedCategory"
+    >
+      <tr
+        *ngFor="let subcategory of getCurrentSubcategories()"
+        [class.selected]="selectedSubcategory === subcategory.name"
+        (click)="selectSubcategory(subcategory.name)"
+      >
+        <td>{{ subcategory.name }}</td>
+        <td class="arrow"><img width="20" src="./image/arrow.svg" alt="" /></td>
+      </tr>
+    </table>
+
+    <table
+      class="advert-table advert-table2"
+      *ngIf="showSubsubcategories && selectedSubcategory"
+    >
+      <tr
+        *ngFor="let subsubcategory of getCurrentSubsubcategories()"
+        (click)="goToSubsubcategory(subsubcategory)"
+      >
+        <td>{{ subsubcategory }}</td>
+      </tr>
+    </table>
+  </div>
+</body>

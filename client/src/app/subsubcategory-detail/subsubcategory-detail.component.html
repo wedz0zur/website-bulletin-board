@@ -1,0 +1,284 @@
+<div class="ad-creation-container">
+  <h2 class="ad-creation-title">Создание объявления</h2>
+
+  <div class="category-info">
+    <p><strong>Категория:</strong> {{ category }}</p>
+    <p><strong>Подкатегория:</strong> {{ subcategory }}</p>
+    <p><strong>Тип:</strong> {{ subsubcategory }}</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <form *ngIf="inputFields.length > 0" class="ad-creation-form" (ngSubmit)="onSubmit(adForm)" #adForm="ngForm">
+    <div class="form-field">
+      <label for="title" class="field-label">
+        Заголовок объявления
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <input
+          type="text"
+          id="title"
+          name="title"
+          class="form-input"
+          placeholder="Краткое описание"
+          required
+          minlength="5"
+          maxlength="100"
+          [(ngModel)]="postData.title"
+          #title="ngModel"
+        />
+        <div *ngIf="title.invalid && title.touched" class="error-text">
+          Заголовок должен быть от 5 до 100 символов
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="description" class="field-label">
+        Подробное описание
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <textarea
+          id="description"
+          name="description"
+          class="form-textarea"
+          placeholder="Опишите подробно ваш товар/услугу"
+          required
+          minlength="20"
+          maxlength="1000"
+          [(ngModel)]="postData.description"
+          #description="ngModel"
+        ></textarea>
+        <div *ngIf="description.invalid && description.touched" class="error-text">
+          Описание должно быть от 20 до 1000 символов
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="price" class="field-label">
+        Цена
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <input
+          type="number"
+          id="price"
+          name="price"
+          class="form-input"
+          placeholder="Укажите цену"
+          required
+          min="0"
+          [(ngModel)]="postData.price"
+          #price="ngModel"
+        />
+        <select id="currency" name="currency" class="form-select currency-select" [(ngModel)]="postData.currency">
+          <option value="RUB">₽</option>
+          <option value="USD">$</option>
+          <option value="EUR">€</option>
+        </select>
+        <div *ngIf="price.invalid && price.touched" class="error-text">
+          Цена должна быть больше или равна 0
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="location" class="field-label">
+        Местоположение
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <input
+          type="text"
+          id="location"
+          name="location"
+          class="form-input"
+          placeholder="Город или адрес"
+          required
+          [(ngModel)]="postData.location"
+          #location="ngModel"
+        />
+        <div *ngIf="location.invalid && location.touched" class="error-text">
+          Укажите местоположение
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let field of inputFields; let i = index" class="form-field">
+      <label [for]="field.name" class="field-label">
+        {{ field.label }}
+        <span *ngIf="field.required" class="required-marker">*</span>
+      </label>
+
+      <div class="input-group">
+        <input
+          *ngIf="!field.type || field.type === 'text'"
+          type="text"
+          [name]="field.name"
+          [id]="field.name"
+          class="form-input"
+          [attr.placeholder]="field.placeholder || field.label"
+          [attr.required]="field.required ? '' : null"
+          [attr.minlength]="field.minlength"
+          [attr.maxlength]="field.maxlength"
+          [attr.pattern]="field.pattern"
+          [(ngModel)]="postData.additional_fields[field.name]"
+          [ngModelOptions]="{ updateOn: 'blur' }"
+        />
+        <div *ngIf="adForm.controls[field.name]?.invalid && adForm.controls[field.name]?.touched && (!field.type || field.type === 'text')" class="error-text">
+          Поле должно содержать минимум {{ field.minlength || 1 }} символов
+        </div>
+
+        <input
+          *ngIf="field.type === 'number'"
+          type="number"
+          [name]="field.name"
+          [id]="field.name"
+          class="form-input"
+          [attr.placeholder]="field.placeholder || field.label"
+          [attr.required]="field.required ? '' : null"
+          [attr.min]="field.min"
+          [attr.max]="field.max"
+          [attr.step]="field.step || 1"
+          [(ngModel)]="postData.additional_fields[field.name]"
+          [ngModelOptions]="{ updateOn: 'blur' }"
+        />
+        <div *ngIf="adForm.controls[field.name]?.invalid && adForm.controls[field.name]?.touched && field.type === 'number'" class="error-text">
+          Значение должно быть между {{ field.min || 0 }} и {{ field.max || '∞' }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="photos" class="field-label">
+        Фотографии
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <div class="file-upload">
+          <label class="file-upload-label">
+            <input
+              type="file"
+              id="photos"
+              name="photos"
+              accept="image/*"
+              multiple
+              (change)="onFileSelected($event)"
+              required
+            />
+            <span class="file-upload-button">Выберите файлы</span>
+            <span class="file-upload-text">До 12 фотографий</span>
+          </label>
+        </div>
+        <div class="file-hint">Первое фото будет на обложке объявления</div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="contact_name" class="field-label">
+        Имя для связи
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <input
+          type="text"
+          id="contact_name"
+          name="contact_name"
+          class="form-input"
+          placeholder="Как к вам обращаться"
+          required
+          [(ngModel)]="postData.contact_name"
+          #contactName="ngModel"
+        />
+        <div *ngIf="contactName.invalid && contactName.touched" class="error-text">
+          Укажите имя для связи
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label class="field-label">Способ связи</label>
+      <div class="input-group">
+        <div class="contact-methods">
+          <label class="checkbox-option">
+            <input
+              type="checkbox"
+              name="contact_phone"
+              [checked]="postData.contact_methods.includes('phone')"
+              (change)="onContactMethodChange($event)"
+            />
+            Телефон
+          </label>
+          <label class="checkbox-option">
+            <input
+              type="checkbox"
+              name="contact_email"
+              [checked]="postData.contact_methods.includes('email')"
+              (change)="onContactMethodChange($event)"
+            />
+            Email
+          </label>
+          <label class="checkbox-option">
+            <input
+              type="checkbox"
+              name="contact_whatsapp"
+              [checked]="postData.contact_methods.includes('whatsapp')"
+              (change)="onContactMethodChange($event)"
+            />
+            WhatsApp
+          </label>
+          <label class="checkbox-option">
+            <input
+              type="checkbox"
+              name="contact_telegram"
+              [checked]="postData.contact_methods.includes('telegram')"
+              (change)="onContactMethodChange($event)"
+            />
+            Telegram
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="phone" class="field-label">
+        Телефон
+        <span class="required-marker">*</span>
+      </label>
+      <div class="input-group">
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          class="form-input"
+          placeholder="+7 (XXX) XXX-XX-XX"
+          pattern="\+7\s?[0-9]{3}\s?[0-9]{3}-?[0-9]{2}-?[0-9]{2}"
+          required
+          [(ngModel)]="postData.phone"
+          #phone="ngModel"
+        />
+        <div *ngIf="phone.invalid && phone.touched" class="error-text">
+          Укажите корректный номер телефона (например, +7 999 123-45-67)
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="submit-button" [disabled]="adForm.invalid">
+        Опубликовать объявление
+      </button>
+      <button type="button" class="draft-button" (click)="onSaveDraft()">
+        Сохранить черновик
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="inputFields.length === 0 && !errorMessage" class="empty-message">
+    <p>Поля для этой подподкатегории пока не настроены.</p>
+  </div>
+</div>

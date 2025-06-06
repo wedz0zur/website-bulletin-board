@@ -1,0 +1,110 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="avatar-section">
+      <img
+        class="user-avatar"
+        *ngIf="user"
+        [src]="'http://localhost:777/' + user.avatar"
+        alt="Аватар"
+        onerror="this.src='assets/default-avatar.webp'"
+      />
+
+      <span *ngIf="user?.roles[0] === 'ADMIN'; else userBadge" class="user-badge admin">
+        Администратор
+      </span>
+      <ng-template #userBadge>
+        <span class="user-badge">Пользователь</span>
+      </ng-template>
+    </div>
+
+    <div class="user-main-info" *ngIf="user">
+      <h1>Имя: {{ user.name }}</h1>
+      <p class="username">Логин: {{ user.userlogin }}</p>
+      <p class="member-since">На сайте с {{ user.registrationDate }}</p>
+
+      <div class="contacts">
+        <a *ngIf="user.email" href="mailto:{{ user.email }}" class="contact-link">
+          <i class="fas fa-envelope"></i> Почта: {{ user.email }}
+        </a>
+      </div>
+    </div>
+
+    <div class="edit-profile-form" *ngIf="editMode">
+      <h2>Редактировать профиль</h2>
+      <form >
+        <div class="form-group">
+          <label for="name">Имя:</label>
+          <input id="name" name="name" [(ngModel)]="name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="userlogin">Логин:</label>
+          <input id="userlogin" name="userlogin" [(ngModel)]="userlogin" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input id="email" name="email" type="email" [(ngModel)]="email" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary" (click)="editProfile()">Сохранить</button>
+          <button type="button" class="btn outline" (click)="cancelEdit()">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="stats-section" *ngIf="user">
+    <div class="stat-card">
+      <div class="stat-value">{{ user.postCount }}</div>
+      <div class="stat-label">Создано объявлений</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">23</div>
+      <div class="stat-label">Продано товаров</div>
+    </div>
+    <div class="stat-card rating">
+      <div class="stat-value">4.8</div>
+      <div class="stat-label">Рейтинг</div>
+    </div>
+  </div>
+
+  <div class="actions-section" *ngIf="user">
+    <button class="btn primary" (click)="showUserAds()">
+      <i class="fas fa-list"></i> Все объявления
+    </button>
+    <button class="btn outline" (click)="setProfile()">
+      <i class="fas fa-user-edit"></i> Редактировать
+    </button>
+    <button class="btn danger" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Выйти
+    </button>
+  </div>
+
+  <div class="latest-ads">
+    <h2>Последние объявления</h2>
+    <div class="ads-grid">
+      @for (ad of userPosts; track $index) {
+      <div class="ad-card">
+        <img [src]="ad.image" alt="Товар" class="ad-image" />
+        <div class="ad-info">
+          <h3>{{ ad.title }}</h3>
+          <p class="ad-price">{{ ad.price }} ₽</p>
+          <p class="ad-date">{{ ad.date }}</p>
+        </div>
+      </div>
+    }
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="showLogoutModal">
+    <div class="modal">
+      <h3>Вы уверены, что хотите выйти?</h3>
+      <div class="modal-actions">
+        <button class="btn danger" (click)="confirmLogout()">Да, выйти</button>
+        <button class="btn outline" (click)="cancelLogout()">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
