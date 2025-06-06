@@ -1,19 +1,19 @@
 import {
   withHttpTransferCache
-} from "./chunk-4RBIIK37.js";
+} from "./chunk-4PZT4FJX.js";
 import {
   CommonModule,
   DomAdapter,
   getDOM,
   setRootDomAdapter
-} from "./chunk-3PGR4HE7.js";
+} from "./chunk-WZN72O4X.js";
 import {
   DOCUMENT,
   PLATFORM_BROWSER_ID,
   XhrFactory,
   isPlatformServer,
   parseCookieValue
-} from "./chunk-PFGOBTYV.js";
+} from "./chunk-DP7Y4572.js";
 import {
   APP_ID,
   ApplicationModule,
@@ -45,6 +45,8 @@ import {
   ViewEncapsulation,
   XSS_SECURITY_URL,
   ZONELESS_ENABLED,
+  __spreadProps,
+  __spreadValues,
   _global,
   _sanitizeHtml,
   _sanitizeUrl,
@@ -72,11 +74,7 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-I3DMCCKQ.js";
-import {
-  __spreadProps,
-  __spreadValues
-} from "./chunk-2C44WUKA.js";
+} from "./chunk-NJ4CSD6C.js";
 
 // node_modules/@angular/platform-browser/fesm2022/dom_renderer-DGKzginR.mjs
 var EVENT_MANAGER_PLUGINS = new InjectionToken(ngDevMode ? "EventManagerPlugins" : "");
@@ -2027,4 +2025,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-B4S2433U.js.map
+//# sourceMappingURL=chunk-LJPTBGYC.js.map
