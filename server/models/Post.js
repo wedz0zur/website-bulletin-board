@@ -1,0 +1,20 @@
+const { Schema, model } = require("mongoose");
+
+const Post = new Schema({
+  title: { type: String, unique: true, required: true },
+  description: { type: String, required: true },
+  image: [{ type: String, default: 'uploads/default/not_img.jpg' }], 
+  price: { type: Number, required: true, min: 0 },
+  currency: { type: String, default: 'RUB' }, 
+  category: { type: String, required: true },
+  subcategory: { type: String, required: false },
+  subsubcategory: { type: String, required: false },
+  author: { type: String, required: true },
+  location: { type: String, required: true }, 
+  contact_name: { type: String, required: true }, 
+  contact_methods: [{ type: String }], 
+  phone: { type: String, required: true }, 
+  additional_fields: { type: Schema.Types.Mixed, default: {} } 
+}, { timestamps: true });
+
+module.exports = model("Post", Post);
