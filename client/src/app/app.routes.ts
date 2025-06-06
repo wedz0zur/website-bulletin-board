@@ -12,7 +12,6 @@ import { BeautyComponent } from './beauty/beauty.component';
 import { CreatePostComponent } from './create-post/create-post.component';
 import { SubsubcategoryDetailComponent } from './subsubcategory-detail/subsubcategory-detail.component';
 import { FavoritesComponent } from './favorites/favorites.component';
-import { SearchComponent } from './search/search.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -28,7 +27,6 @@ export const routes: Routes = [
   { path: "beauty", component: BeautyComponent },
   { path: "additem", component: CreatePostComponent },
   { path: 'subsubcategory-detail', component: SubsubcategoryDetailComponent },
-  { path: 'favorites', component: FavoritesComponent },
-  { path: 'search', component: SearchComponent }
+  { path: 'favorites', component: FavoritesComponent }
 
 ];

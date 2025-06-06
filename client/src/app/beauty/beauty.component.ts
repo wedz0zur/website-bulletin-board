@@ -16,7 +16,7 @@ export class BeautyComponent {
 
   async ngOnInit() {
     const allPosts = await this.postService.getPosts();
-    this.posts = allPosts.filter((post: any) => post.category === 'Авто');
+    this.posts = allPosts.filter((post: any) => post.category === 'Красота и здоровье');
   }
 
   goToProduct(id: number) {

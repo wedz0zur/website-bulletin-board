@@ -10,7 +10,6 @@
   </div>
 
   <div class="avito-post-container" *ngIf="post">
-    <!-- Галерея -->
     <div class="avito-gallery">
       <div class="avito-main-image">
         <img [src]="`http://localhost:777/${post.image[activeImage]}`" class="avito-product-image" />
@@ -26,7 +25,6 @@
       </div>
     </div>
 
-    <!-- Основная информация -->
     <div class="avito-product-info">
       <div class="avito-product-header">
         <h1 class="avito-post-title">{{ post.title }}</h1>
@@ -50,7 +48,6 @@
         </div>
       </div>
 
-      <!-- Описание -->
       <div class="avito-product-description">
         <h3 class="avito-description-title">Описание</h3>
         <div class="avito-description-content">
@@ -73,7 +70,6 @@
         </div>
       </div>
 
-      <!-- Характеристики -->
       <div *ngIf="post.additional_fields && objectKeys(post.additional_fields).length" class="avito-characteristics">
         <h3 class="avito-section-title">Характеристики</h3>
         <ul class="avito-characteristics-list">
@@ -84,7 +80,6 @@
         </ul>
       </div>
 
-      <!-- Контакты -->
       <div class="avito-contact-section">
         <h3 class="avito-section-title">Контактная информация</h3>
         <div class="avito-contact-info">
@@ -99,7 +94,6 @@
         </div>
       </div>
 
-      <!-- Действия -->
       <div class="avito-product-actions">
         <button *ngIf="isAuthor && isAuthenticated()" (click)="confirmDelete()" class="avito-button avito-button-delete">
           Удалить публикацию
@@ -111,7 +105,6 @@
     </div>
   </div>
 
-  <!-- Модалка удаления -->
   <div class="avito-modal" *ngIf="showDeleteModal">
     <div class="avito-modal-content">
       <h2 class="avito-modal-title">Подтверждение удаления</h2>
@@ -123,7 +116,6 @@
     </div>
   </div>
 
-  <!-- Модалка редактирования -->
   <div class="avito-modal" *ngIf="showEditModal">
     <div class="avito-modal-content">
       <h2 class="avito-modal-title">Редактировать объявление</h2>
