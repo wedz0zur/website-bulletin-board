@@ -25,8 +25,8 @@ const upload = multer({
     }
   },
   limits: {
-    fileSize: 6 * 1024 * 1024, // 6 МБ
-    files: 12, // Максимум 12 файлов
+    fileSize: 6 * 1024 * 1024, 
+    files: 12, 
   },
 });
 

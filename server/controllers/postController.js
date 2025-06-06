@@ -117,7 +117,7 @@ getPosts = async (req, res) => {
 
     let posts;
     if (query) {
-      const regex = new RegExp('^' + query, 'i'); // начало строки, регистронезависимо
+      const regex = new RegExp('^' + query, 'i'); 
       posts = await Post.find({ title: { $regex: regex } }).limit(10);
     } else {
       posts = await Post.find().limit(10);
