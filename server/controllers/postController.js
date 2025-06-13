@@ -111,29 +111,29 @@ class PostController {
         .json({ message: "Ошибка при получении объявлений пользователя" });
     }
   }
-getPosts = async (req, res) => {
-  try {
-    const query = req.query.query;
 
-    let posts;
-    if (query) {
-      const regex = new RegExp('^' + query, 'i'); 
-      posts = await Post.find({ title: { $regex: regex } }).limit(10);
-    } else {
-      posts = await Post.find().limit(10);
+  getPosts = async (req, res) => {
+    try {
+      const query = req.query.query;
+
+      let posts;
+      if (query) {
+        const regex = new RegExp('^' + query, 'i'); 
+        posts = await Post.find({ title: { $regex: regex } }).limit(10);
+      } else {
+        posts = await Post.find().limit(10);
+      }
+
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ message: 'Ошибка сервера' });
     }
-
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ message: 'Ошибка сервера' });
-  }
-};
-
+  };
 
   async getOnePost(req, res) {
     try {
       const id = req.params.id;
-      const post = await Post.findById(id);
+      const post = await Post.findById(id).populate('comments.author', 'name');
       if (!post) {
         return res.status(404).json({ message: "Пост не найден" });
       }
@@ -168,6 +168,118 @@ getPosts = async (req, res) => {
     } catch (e) {
       console.error("Ошибка при обновлении поста:", e);
       res.status(500).json({ message: "Ошибка обновления поста" });
+    }
+  }
+
+  async addComment(req, res) {
+    try {
+      const postId = req.params.id;
+      const userId = req.user.id;
+      const { text } = req.body;
+
+      if (!text) {
+        return res.status(400).json({ message: "Текст комментария обязателен" });
+      }
+
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: "Пост не найден" });
+      }
+
+      const comment = {
+        text,
+        author: userId,
+        createdAt: new Date()
+      };
+
+      post.comments.push(comment);
+      await post.save();
+
+      const updatedPost = await Post.findById(postId).populate('comments.author', 'name');
+      res.status(201).json({ message: "Комментарий добавлен", post: updatedPost });
+    } catch (e) {
+      console.error("Ошибка при добавлении комментария:", e);
+      res.status(500).json({ message: "Ошибка сервера" });
+    }
+  }
+
+  async deleteComment(req, res) {
+    try {
+      const postId = req.params.postId;
+      const commentId = req.params.commentId;
+      const userId = req.user.id;
+
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: "Пост не найден" });
+      }
+
+      const comment = post.comments.id(commentId);
+      if (!comment) {
+        return res.status(404).json({ message: "Комментарий не найден" });
+      }
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Пользователь не найден" });
+      }
+
+      const isAdmin = user.roles.includes("ADMIN");
+      if (comment.author.toString() !== userId && !isAdmin) {
+        return res.status(403).json({ message: "Вы не можете удалить этот комментарий" });
+      }
+
+      post.comments = post.comments.filter(c => c._id.toString() !== commentId);
+      await post.save();
+
+      const updatedPost = await Post.findById(postId).populate('comments.author', 'name');
+      res.status(200).json({ message: "Комментарий удалён", post: updatedPost });
+    } catch (e) {
+      console.error("Ошибка при удалении комментария:", e);
+      res.status(500).json({ message: "Ошибка сервера" });
+    }
+  }
+
+  async editComment(req, res) {
+    try {
+      const postId = req.params.postId;
+      const commentId = req.params.commentId;
+      const userId = req.user.id;
+      const { text } = req.body;
+
+      if (!text) {
+        return res.status(400).json({ message: "Текст комментария обязателен" });
+      }
+
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: "Пост не найден" });
+      }
+
+      const comment = post.comments.id(commentId);
+      if (!comment) {
+        return res.status(404).json({ message: "Комментарий не найден" });
+      }
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Пользователь не найден" });
+      }
+
+      const isAdmin = user.roles.includes("ADMIN");
+      if (comment.author.toString() !== userId && !isAdmin) {
+        return res.status(403).json({ message: "Вы не можете редактировать этот комментарий" });
+      }
+
+      comment.text = text;
+      comment.updatedAt = new Date();
+      await post.save();
+
+      const updatedPost = await Post.findById(postId).populate('comments.author', 'name');
+      res.status(200).json({ message: "Комментарий обновлён", post: updatedPost });
+    } catch (e) {
+      console.error("Ошибка при редактировании комментария:", e);
+      res.status(500).json({ message: "Ошибка сервера" });
     }
   }
 

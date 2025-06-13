@@ -6,6 +6,11 @@ import { LoginService } from '../service/login.service';
 import { NgIf, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+interface CommentResponse {
+  message: string;
+  post: any; 
+}
+
 @Component({
   selector: 'app-post-page',
   standalone: true,
@@ -19,9 +24,15 @@ export class PostPageComponent {
   user: any = {};
   showDeleteModal = false;
   showEditModal = false;
+  showDeleteCommentModal = false;
+  showEditCommentModal = false;
   isAuthor = false;
   showDescription = false;
   activeImage: number = 0;
+  newComment: string = '';
+  commentToDelete: string | null = null;
+  commentToEdit: string | null = null;
+  editCommentText: string = '';
 
   title = '';
   price = 0;
@@ -56,6 +67,10 @@ export class PostPageComponent {
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
+  }
+
+  isCommentAuthorOrAdmin(comment: any): boolean {
+    return this.isAuthenticated() && (comment.author._id === this.user._id || this.user.roles?.includes('ADMIN'));
   }
 
   goBack() {
@@ -110,6 +125,71 @@ export class PostPageComponent {
       this.ngOnInit();
     } catch (e) {
       console.error('Ошибка при обновлении поста:', e);
+      alert('Не удалось обновить пост');
+    }
+  }
+
+  async addComment() {
+    const token = localStorage.getItem('token');
+    if (!token || !this.newComment.trim()) return;
+
+    try {
+      const updatedPost: CommentResponse = await this.postService.addComment(this.id, { text: this.newComment }, token);
+      this.post = updatedPost.post;
+      this.newComment = '';
+    } catch (e) {
+      console.error('Ошибка при добавлении комментария:', e);
+      alert('Не удалось добавить комментарий');
+    }
+  }
+
+  confirmDeleteComment(commentId: string) {
+    this.commentToDelete = commentId;
+    this.showDeleteCommentModal = true;
+  }
+
+  cancelDeleteComment() {
+    this.commentToDelete = null;
+    this.showDeleteCommentModal = false;
+  }
+
+  async deleteComment() {
+    const token = localStorage.getItem('token');
+    if (!token || !this.commentToDelete) return;
+
+    try {
+      const updatedPost: CommentResponse = await this.postService.deleteComment(this.id, this.commentToDelete, token);
+      this.post = updatedPost.post;
+      this.cancelDeleteComment();
+    } catch (e) {
+      console.error('Ошибка при удалении комментария:', e);
+      alert('Не удалось удалить комментарий');
+    }
+  }
+
+  openEditCommentModal(commentId: string, currentText: string) {
+    this.commentToEdit = commentId;
+    this.editCommentText = currentText;
+    this.showEditCommentModal = true;
+  }
+
+  cancelEditComment() {
+    this.commentToEdit = null;
+    this.editCommentText = '';
+    this.showEditCommentModal = false;
+  }
+
+  async saveEditComment() {
+    const token = localStorage.getItem('token');
+    if (!token || !this.commentToEdit || !this.editCommentText.trim()) return;
+
+    try {
+      const updatedPost: CommentResponse = await this.postService.editComment(this.id, this.commentToEdit, { text: this.editCommentText }, token);
+      this.post = updatedPost.post;
+      this.cancelEditComment();
+    } catch (e) {
+      console.error('Ошибка при редактировании комментария:', e);
+      alert('Не удалось отредактировать комментарий');
     }
   }
 }

@@ -14,7 +14,13 @@ const Post = new Schema({
   contact_name: { type: String, required: true }, 
   contact_methods: [{ type: String }], 
   phone: { type: String, required: true }, 
-  additional_fields: { type: Schema.Types.Mixed, default: {} } 
+  additional_fields: { type: Schema.Types.Mixed, default: {} },
+  comments: [{
+    text: { type: String, required: true },
+    author: { type: Schema.Types.ObjectId, ref: 'USER', required: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date }
+  }]
 }, { timestamps: true });
 
 module.exports = model("Post", Post);

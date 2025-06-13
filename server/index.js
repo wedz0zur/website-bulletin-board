@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require('cors')
 const { default: mongoose } = require("mongoose");
-const authRouter = require("./routers/authRoute");
-const postRouter = require("./routers/postRoute")
+const authRouter = require("./routes/authRoute");
+const postRouter = require("./routes/postRoute")
 
 const PORT = process.env.PORT || 777;
 
@@ -13,6 +13,7 @@ app.use(express.json())
 app.use('/auth' , authRouter)
 app.use('/post' , postRouter)
 app.use("/uploads" , express.static("uploads"))
+
 
 const start = async () => {
   try {

@@ -385,3 +385,305 @@
   resize: vertical;
   min-height: 100px;
 }
+
+.avito-comments-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.avito-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.avito-comments-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.avito-comment-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.avito-comment-author {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.avito-comment-edited {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999;
+  margin-left: 8px;
+}
+
+.avito-comment-text {
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.avito-comment-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+}
+
+.avito-no-comments {
+  font-size: 14px;
+  color: #999;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.avito-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.avito-comment-textarea {
+  resize: vertical;
+  min-height: 64px;
+  max-height: 200px;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000;
+  background-color: #fff;
+  transition: border-color 0.2s;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #009ee0;
+    outline: none;
+  }
+}
+
+.avito-button-comment {
+  align-self: flex-start;
+  background-color: #009ee0;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0087c7;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.avito-button-delete-comment {
+  background: none;
+  color: #cc0000;
+  padding: 0;
+  border: none;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #990000;
+  }
+}
+
+.avito-button-edit-comment {
+  background: none;
+  color: #009ee0;
+  padding: 0;
+  border: none;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #0087c7;
+  }
+}
+
+.avito-button-chat {
+  background-color: #009ee0;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0087c7;
+  }
+}
+
+/* Стили для модальных окон */
+.avito-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.avito-modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.avito-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.avito-modal-text {
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.avito-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.avito-button-confirm {
+  background-color: #cc0000;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #990000;
+  }
+}
+
+.avito-button-cancel {
+  background: none;
+  color: #009ee0;
+  padding: 8px 16px;
+  border: 1px solid #009ee0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: #f0faff;
+  }
+}
+
+.avito-button-save {
+  background-color: #009ee0;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0087c7;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.avito-form-group {
+  margin-bottom: 16px;
+}
+
+.avito-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #000;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.avito-form-input,
+.avito-form-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000;
+  background-color: #fff;
+  transition: border-color 0.2s;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #009ee0;
+    outline: none;
+  }
+}
+
+.avito-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+}

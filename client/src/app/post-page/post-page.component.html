@@ -6,7 +6,7 @@
       </svg>
       Назад
     </button>
-    <h1 class="avito-page-title">Объявление</h1>
+    <h1 class="avito-page-title">Об объявлении</h1>
   </div>
 
   <div class="avito-post-container" *ngIf="post">
@@ -94,6 +94,29 @@
         </div>
       </div>
 
+      <div class="avito-comments-section">
+        <h3 class="avito-section-title">Комментарии</h3>
+        <div class="avito-comments-list" *ngIf="post.comments?.length; else noComments">
+          <div *ngFor="let comment of post.comments" class="avito-comment-item">
+            <p class="avito-comment-author">{{ comment.author.name }} ({{ comment.createdAt | date: 'dd.MM.yyyy HH:mm' }}) 
+              <span *ngIf="comment.updatedAt" class="avito-comment-edited">(ред. {{ comment.updatedAt | date: 'dd.MM.yyyy HH:mm' }})</span>
+            </p>
+            <p class="avito-comment-text">{{ comment.text }}</p>
+            <div class="avito-comment-actions" *ngIf="isCommentAuthorOrAdmin(comment)">
+              <button (click)="confirmDeleteComment(comment._id)" class="avito-button avito-button-delete-comment">Удалить</button>
+              <button (click)="openEditCommentModal(comment._id, comment.text)" class="avito-button avito-button-edit-comment">Редактировать</button>
+            </div>
+          </div>
+        </div>
+        <ng-template #noComments>
+          <p class="avito-no-comments">Комментариев пока нет</p>
+        </ng-template>
+        <div class="avito-comment-form" *ngIf="isAuthenticated()">
+          <textarea [(ngModel)]="newComment" placeholder="Напишите ваш комментарий..." class="avito-comment-textarea"></textarea>
+          <button (click)="addComment()" [disabled]="!newComment.trim()" class="avito-button avito-button-comment">Отправить</button>
+        </div>
+      </div>
+
       <div class="avito-product-actions">
         <button *ngIf="isAuthor && isAuthenticated()" (click)="confirmDelete()" class="avito-button avito-button-delete">
           Удалить публикацию
@@ -135,6 +158,33 @@
         <div class="avito-modal-actions">
           <button (click)="saveEdit()" [disabled]="!editForm.form.valid" class="avito-button avito-button-save">Сохранить</button>
           <button (click)="cancelEdit()" type="button" class="avito-button avito-button-cancel">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="avito-modal" *ngIf="showDeleteCommentModal">
+    <div class="avito-modal-content">
+      <h2 class="avito-modal-title">Подтверждение удаления комментария</h2>
+      <p class="avito-modal-text">Вы уверены, что хотите удалить этот комментарий?</p>
+      <div class="avito-modal-actions">
+        <button (click)="deleteComment()" class="avito-button avito-button-confirm">Да, удалить</button>
+        <button (click)="cancelDeleteComment()" class="avito-button avito-button-cancel">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="avito-modal" *ngIf="showEditCommentModal">
+    <div class="avito-modal-content">
+      <h2 class="avito-modal-title">Редактировать комментарий</h2>
+      <form #editCommentForm="ngForm" class="avito-edit-form">
+        <div class="avito-form-group">
+          <label class="avito-form-label">Текст комментария:</label>
+          <textarea [(ngModel)]="editCommentText" name="editCommentText" required rows="5" class="avito-form-textarea"></textarea>
+        </div>
+        <div class="avito-modal-actions">
+          <button (click)="saveEditComment()" [disabled]="!editCommentForm.form.valid" class="avito-button avito-button-save">Сохранить</button>
+          <button (click)="cancelEditComment()" type="button" class="avito-button avito-button-cancel">Отмена</button>
         </div>
       </form>
     </div>

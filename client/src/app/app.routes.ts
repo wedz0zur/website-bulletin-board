@@ -13,6 +13,7 @@ import { CreatePostComponent } from './create-post/create-post.component';
 import { SubsubcategoryDetailComponent } from './subsubcategory-detail/subsubcategory-detail.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 
+
 export const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "home", component: HomeComponent },

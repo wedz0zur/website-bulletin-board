@@ -13,5 +13,8 @@ router.get('/user/:id', authMiddleware, postController.getUserPosts);
 router.post('/favorites/:postId', authMiddleware, postController.addToFavorites);
 router.delete('/favorites/:postId', authMiddleware, postController.removeFromFavorites);
 router.get('/favorites', authMiddleware, postController.getFavorites);
+router.post('/comment/:id', authMiddleware, postController.addComment);
+router.delete('/comment/:postId/:commentId', authMiddleware, postController.deleteComment);
+router.patch('/comment/:postId/:commentId', authMiddleware, postController.editComment);
 
 module.exports = router;
