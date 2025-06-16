@@ -2,9 +2,58 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, lastValueFrom } from 'rxjs';
 
+interface Message {
+  text: string;
+  sender: { _id: string; name: string };
+  recipient: { _id: string; name: string };
+  createdAt: string;
+}
+
+interface Comment {
+  _id: string;
+  author: { _id: string; name: string };
+  text: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+interface Post {
+  _id: string;
+  title: string;
+  price: number;
+  description: string;
+  author: string;
+  messages: Message[];
+  comments?: Comment[];
+  image: string[];
+  location?: string;
+  category?: string;
+  subcategory?: string;
+  subsubcategory?: string;
+  contact_name: string;
+  contact_methods: string[];
+  additional_fields?: { [key: string]: string };
+  createdAt: string;
+}
+
+interface SellerChat {
+  postId: string;
+  postTitle: string;
+  userId: string;
+  userName: string;
+  messages: Message[];
+}
+
+interface UpdatePostData {
+  title?: string;
+  price?: number;
+  description?: string;
+  [key: string]: any;
+}
+
 interface CommentResponse {
   message: string;
-  post: any; // Можно уточнить тип, если есть интерфейс для Post
+  post: Post;
 }
 
 @Injectable({
@@ -15,33 +64,33 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
-  addPost(formData: FormData, token: string): Observable<any> {
+  addPost(formData: FormData, token: string): Observable<Post> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
 
-    return this.http.post(`${this.apiUrl}/addPost`, formData, { headers });
+    return this.http.post<Post>(`${this.apiUrl}/addPost`, formData, { headers });
   }
 
-  async getPosts() {
+  async getPosts(): Promise<Post[]> {
     try {
       const res = await fetch(`${this.apiUrl}/posts`)
         .then((res) => res.json())
         .then((data) => data);
-      return res;
+      return res as Post[];
     } catch {
       console.error('Ошибка получения постов');
       return [];
     }
   }
 
-  async getPost(id: string) {
+  async getPost(id: string): Promise<Post> {
     try {
       const res = await lastValueFrom(this.http.get(`${this.apiUrl}/post/${id}`));
-      return res;
+      return res as Post;
     } catch (error) {
       console.error('Ошибка получения поста:', error);
-      return error;
+      throw error;
     }
   }
 
@@ -56,7 +105,7 @@ export class PostService {
     }
   }
 
-  async updatePost(id: string, updatedData: any, token: string) {
+  async updatePost(id: string, updatedData: UpdatePostData, token: string) {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -111,6 +160,35 @@ export class PostService {
       return res;
     } catch (error) {
       console.error('Ошибка при редактировании комментария:', error);
+      throw error;
+    }
+  }
+
+  async sendMessage(id: string, messageData: { text: string; recipientId?: string }, token: string): Promise<CommentResponse> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    try {
+      const res = await lastValueFrom(this.http.post<CommentResponse>(`${this.apiUrl}/message/${id}`, messageData, { headers }));
+      return res;
+    } catch (error) {
+      console.error('Ошибка при отправке сообщения:', error);
+      throw error;
+    }
+  }
+
+  async getSellerChats(token: string): Promise<SellerChat[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    try {
+      const res = await lastValueFrom(this.http.get<SellerChat[]>(`${this.apiUrl}/seller-chats`, { headers }));
+      return res;
+    } catch (error) {
+      console.error('Ошибка при получении чатов:', error);
       throw error;
     }
   }

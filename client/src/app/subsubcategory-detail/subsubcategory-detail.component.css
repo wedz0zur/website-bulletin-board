@@ -1,15 +1,13 @@
-/* Общий контейнер формы */
+
 .ad-creation-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Заголовок */
 .ad-creation-title {
   font-size: 24px;
   color: #333;
@@ -17,7 +15,6 @@
   margin-bottom: 20px;
 }
 
-/* Информация о категории */
 .category-info {
   margin-bottom: 20px;
   padding: 10px;
@@ -32,7 +29,6 @@
   color: #555;
 }
 
-/* Сообщение об ошибке */
 .error-message {
   color: #d32f2f;
   background-color: #ffebee;
@@ -42,14 +38,12 @@
   text-align: center;
 }
 
-/* Форма */
 .ad-creation-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Поля формы */
 .form-field {
   display: flex;
   flex-direction: column;
@@ -106,7 +100,6 @@
   font-size: 14px;
 }
 
-/* Поле загрузки файлов */
 .file-upload {
   display: flex;
   align-items: center;
@@ -148,7 +141,6 @@
   margin-top: 4px;
 }
 
-/* Чекбоксы для способов связи */
 .contact-methods {
   display: flex;
   flex-wrap: wrap;
@@ -169,7 +161,6 @@
   cursor: pointer;
 }
 
-/* Кнопки действий */
 .form-actions {
   display: flex;
   gap: 16px;
@@ -210,7 +201,6 @@
   background-color: #607d8b;
 }
 
-/* Сообщение о пустых полях */
 .empty-message {
   text-align: center;
   font-size: 16px;
@@ -221,7 +211,6 @@
   border-radius: 4px;
 }
 
-/* Адаптивность */
 @media (max-width: 600px) {
   .ad-creation-container {
     padding: 10px;

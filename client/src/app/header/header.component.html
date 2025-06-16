@@ -22,7 +22,7 @@
 
   <div class="registration-svg">
     <div class="svg">
-     <a routerLink="/favorites" routerLinkActive="active" arriaCurrentWhenActive="page"><img src="./image/header_img/heart.svg" alt="" class="heart" /></a>
+     <a *ngIf="user" routerLink="/favorites" routerLinkActive="active" arriaCurrentWhenActive="page"><img src="./image/header_img/heart.svg" alt="" class="heart" /></a>
     </div>
     <div *ngIf="!user; else loggedIn" class="registration" (click)="setModal()">
       Вход и регистрация

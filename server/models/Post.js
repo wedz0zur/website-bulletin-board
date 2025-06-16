@@ -20,6 +20,12 @@ const Post = new Schema({
     author: { type: Schema.Types.ObjectId, ref: 'USER', required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date }
+  }],
+  messages: [{
+    text: { type: String, required: true },
+    sender: { type: Schema.Types.ObjectId, ref: 'USER', required: true },
+    recipient: { type: Schema.Types.ObjectId, ref: 'USER', required: true },
+    createdAt: { type: Date, default: Date.now }
   }]
 }, { timestamps: true });
 

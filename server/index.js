@@ -4,6 +4,7 @@ const { default: mongoose } = require("mongoose");
 const authRouter = require("./routes/authRoute");
 const postRouter = require("./routes/postRoute")
 
+
 const PORT = process.env.PORT || 777;
 
 const app = express({ limit: "100mb" });
@@ -13,6 +14,7 @@ app.use(express.json())
 app.use('/auth' , authRouter)
 app.use('/post' , postRouter)
 app.use("/uploads" , express.static("uploads"))
+
 
 
 const start = async () => {

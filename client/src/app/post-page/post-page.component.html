@@ -14,7 +14,7 @@
       <div class="avito-main-image">
         <img [src]="`http://localhost:777/${post.image[activeImage]}`" class="avito-product-image" />
       </div>
-      <div class="avito-thumbnail-list" *ngIf="post.image?.length > 1">
+      <div class="avito-thumbnail-list" *ngIf="post.image && post.image.length > 1">
         <img
           *ngFor="let img of post.image; index as i"
           [src]="`http://localhost:777/${img}`"
@@ -22,6 +22,75 @@
           (click)="activeImage = i"
           class="avito-thumbnail"
         />
+      </div>
+   <div class="avito-contact-section">
+        <h3 class="avito-section-title">Контактная информация</h3>
+        <div class="avito-contact-info">
+          <p class="avito-contact-item">
+            <span class="avito-contact-label">Имя:</span>
+            <span class="avito-contact-value">{{ post.contact_name }}</span>
+          </p>
+          <p *ngFor="let method of post.contact_methods" class="avito-contact-item">
+            <span class="avito-contact-label">Связь:</span>
+            <span class="avito-contact-value">{{ method }}</span>
+          </p>
+          <button *ngIf="isAuthenticated() && !isAuthor && user" (click)="toggleChat()" class="avito-button avito-button-message">
+            {{ showChat ? 'Закрыть чат' : 'Написать продавцу' }}
+          </button>
+          <button *ngIf="isAuthenticated() && isAuthor" (click)="toggleChat()" class="avito-button avito-button-message">
+            {{ showChat ? 'Закрыть чаты' : 'Открыть чаты' }}
+          </button>
+        </div>
+        <div class="avito-chat-panel" *ngIf="showChat && isAuthenticated()">
+          <div class="avito-chat-header">
+            <h3 class="avito-chat-title">{{ isAuthor ? 'Чаты по объявлению' : 'Чат с продавцом' }}</h3>
+            <button (click)="toggleChat()" class="avito-chat-close">×</button>
+          </div>
+          <div class="avito-chat-users" *ngIf="isAuthor && getChatUsers().length">
+            <div
+              *ngFor="let user of getChatUsers()"
+              (click)="selectChatUser(user._id)"
+              class="avito-chat-user"
+              [class.avito-chat-user-active]="selectedChatUser === user._id"
+            >
+              {{ user.name }}
+            </div>
+          </div>
+          <div class="avito-chat-messages">
+            <div *ngFor="let message of getFilteredMessages()" class="avito-chat-message" [class.avito-own-message]="message.sender._id === user?._id">
+              <p class="avito-chat-author">{{ message.sender.name }} ({{ message.createdAt | date: 'dd.MM.yyyy HH:mm' }})</p>
+              <p class="avito-chat-text">{{ message.text }}</p>
+            </div>
+            <p *ngIf="!getFilteredMessages().length" class="avito-no-messages">Сообщений пока нет</p>
+          </div>
+          <div class="avito-chat-form">
+            <textarea [(ngModel)]="newMessage" placeholder="Напишите сообщение..." class="avito-chat-textarea"></textarea>
+            <button (click)="sendMessage()" [disabled]="!newMessage.trim() || (isAuthor && !selectedChatUser)" class="avito-button avito-button-send">Отправить</button>
+          </div>
+        </div>
+      </div>
+  <div class="avito-comments-section">
+        <h3 class="avito-section-title">Обсуждение</h3>
+        <div *ngIf="isAuthenticated() && user" class="avito-comment-form" >
+          <textarea [(ngModel)]="newComment" placeholder="Напишите ваш комментарий..." class="avito-comment-textarea"></textarea>
+          <button (click)="addComment()" [disabled]="!newComment.trim()" class="avito-button avito-button-comment">Отправить</button>
+        </div>
+        <div class="avito-comments-list" *ngIf="post.comments?.length; else noComments">
+          <div *ngFor="let comment of post.comments" class="avito-comment-item">
+            <p class="avito-comment-author">{{ comment.author.name }} ({{ comment.createdAt | date: 'dd.MM.yyyy HH:mm' }})
+              <span *ngIf="comment.updatedAt" class="avito-comment-edited">(ред. {{ comment.updatedAt | date: 'dd.MM.yyyy HH:mm' }})</span>
+            </p>
+            <p class="avito-comment-text">{{ comment.text }}</p>
+            <div class="avito-comment-actions" *ngIf="isCommentAuthorOrAdmin(comment)">
+              <button (click)="confirmDeleteComment(comment._id)" class="avito-button avito-button-delete-comment">Удалить</button>
+              <button (click)="openEditCommentModal(comment._id, comment.text)" class="avito-button avito-button-edit-comment">Редактировать</button>
+            </div>
+          </div>
+        </div>
+        <ng-template #noComments>
+          <p class="avito-no-comments">Комментариев пока нет</p>
+        </ng-template>
+
       </div>
     </div>
 
@@ -35,7 +104,7 @@
 
       <div class="avito-product-meta">
         <div class="avito-meta-item">
-          <span class="avito-meta-label">Город:</span> 
+          <span class="avito-meta-label">Город:</span>
           <span class="avito-meta-value">{{ post.location || 'Не указан' }}</span>
         </div>
         <div class="avito-meta-item">
@@ -74,48 +143,14 @@
         <h3 class="avito-section-title">Характеристики</h3>
         <ul class="avito-characteristics-list">
           <li *ngFor="let key of objectKeys(post.additional_fields)" class="avito-characteristics-item">
-            <span class="avito-characteristics-key">{{ key }}:</span> 
+            <span class="avito-characteristics-key">{{ key }}:</span>
             <span class="avito-characteristics-value">{{ post.additional_fields[key] }}</span>
           </li>
         </ul>
       </div>
 
-      <div class="avito-contact-section">
-        <h3 class="avito-section-title">Контактная информация</h3>
-        <div class="avito-contact-info">
-          <p class="avito-contact-item">
-            <span class="avito-contact-label">Имя:</span> 
-            <span class="avito-contact-value">{{ post.contact_name }}</span>
-          </p>
-          <p *ngFor="let method of post.contact_methods" class="avito-contact-item">
-            <span class="avito-contact-label">Связь:</span> 
-            <span class="avito-contact-value">{{ method }}</span>
-          </p>
-        </div>
-      </div>
 
-      <div class="avito-comments-section">
-        <h3 class="avito-section-title">Комментарии</h3>
-        <div class="avito-comments-list" *ngIf="post.comments?.length; else noComments">
-          <div *ngFor="let comment of post.comments" class="avito-comment-item">
-            <p class="avito-comment-author">{{ comment.author.name }} ({{ comment.createdAt | date: 'dd.MM.yyyy HH:mm' }}) 
-              <span *ngIf="comment.updatedAt" class="avito-comment-edited">(ред. {{ comment.updatedAt | date: 'dd.MM.yyyy HH:mm' }})</span>
-            </p>
-            <p class="avito-comment-text">{{ comment.text }}</p>
-            <div class="avito-comment-actions" *ngIf="isCommentAuthorOrAdmin(comment)">
-              <button (click)="confirmDeleteComment(comment._id)" class="avito-button avito-button-delete-comment">Удалить</button>
-              <button (click)="openEditCommentModal(comment._id, comment.text)" class="avito-button avito-button-edit-comment">Редактировать</button>
-            </div>
-          </div>
-        </div>
-        <ng-template #noComments>
-          <p class="avito-no-comments">Комментариев пока нет</p>
-        </ng-template>
-        <div class="avito-comment-form" *ngIf="isAuthenticated()">
-          <textarea [(ngModel)]="newComment" placeholder="Напишите ваш комментарий..." class="avito-comment-textarea"></textarea>
-          <button (click)="addComment()" [disabled]="!newComment.trim()" class="avito-button avito-button-comment">Отправить</button>
-        </div>
-      </div>
+
 
       <div class="avito-product-actions">
         <button *ngIf="isAuthor && isAuthenticated()" (click)="confirmDelete()" class="avito-button avito-button-delete">
@@ -128,7 +163,7 @@
     </div>
   </div>
 
-  <div class="avito-modal" *ngIf="showDeleteModal">
+  <div class="avito-modal" *ngIf="showDeleteModal && post">
     <div class="avito-modal-content">
       <h2 class="avito-modal-title">Подтверждение удаления</h2>
       <p class="avito-modal-text">Вы уверены, что хотите удалить объявление "{{ post.title }}"?</p>

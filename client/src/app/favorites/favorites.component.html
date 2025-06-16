@@ -26,8 +26,9 @@
         <img [src]="'http://localhost:777/' + post.image[0]" alt="{{post.title}}" />
       </div>
       <div class="post-info">
-        <h3 (click)="goToProduct(post._id)">{{ post.title | truncate: 30 }}</h3>
+        <h2 (click)="goToProduct(post._id)">{{ post.title | truncate: 30 }}</h2>
         <p class="price">{{ post.price }} ₽</p>
+        <p class="description">{{ post.description | truncate: 30 }}</p>
         <button class="remove-button" (click)="confirmDelete(post._id, $event)">
           Удалить из избранного
         </button>

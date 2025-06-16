@@ -16,5 +16,7 @@ router.get('/favorites', authMiddleware, postController.getFavorites);
 router.post('/comment/:id', authMiddleware, postController.addComment);
 router.delete('/comment/:postId/:commentId', authMiddleware, postController.deleteComment);
 router.patch('/comment/:postId/:commentId', authMiddleware, postController.editComment);
+router.post('/message/:id', authMiddleware, postController.sendMessage);
+router.get('/seller-chats', authMiddleware, postController.getSellerChats);
 
 module.exports = router;

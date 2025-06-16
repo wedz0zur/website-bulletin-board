@@ -331,6 +331,101 @@ class PostController {
         .json({ message: "Ошибка при получении избранных постов" });
     }
   }
+  
+
+  
+  async getOnePost(req, res) {
+    try {
+      const id = req.params.id;
+      const post = await Post.findById(id)
+        .populate('comments.author', 'name')
+        .populate('messages.sender', 'name')
+        .populate('messages.recipient', 'name');
+      if (!post) {
+        return res.status(404).json({ message: "Пост не найден" });
+      }
+      res.json(post);
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: "Ошибка при получении поста" });
+    }
+  }
+
+  async sendMessage(req, res) {
+    try {
+      const postId = req.params.id;
+      const userId = req.user.id;
+      const { text } = req.body;
+
+      if (!text) {
+        return res.status(400).json({ message: "Текст сообщения обязателен" });
+      }
+
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: "Пост не найден" });
+      }
+
+      const recipientId = userId === post.author ? req.body.recipientId : post.author;
+      if (!recipientId) {
+        return res.status(400).json({ message: "Идентификатор получателя обязателен" });
+      }
+
+      const message = {
+        text,
+        sender: userId,
+        recipient: recipientId,
+        createdAt: new Date()
+      };
+
+      post.messages.push(message);
+      await post.save();
+
+      const updatedPost = await Post.findById(postId)
+        .populate('messages.sender', 'name')
+        .populate('messages.recipient', 'name');
+      res.status(201).json({ message: "Сообщение отправлено", post: updatedPost });
+    } catch (e) {
+      console.error("Ошибка при отправке сообщения:", e);
+      res.status(500).json({ message: "Ошибка сервера" });
+    }
+  }
+
+  async getSellerChats(req, res) {
+    try {
+      const userId = req.user.id;
+      const posts = await Post.find({ author: userId })
+        .populate('messages.sender', 'name')
+        .populate('messages.recipient', 'name')
+        .select('title messages');
+      
+      const chats = posts.reduce((acc, post) => {
+        if (post.messages.length) {
+          const chatUsers = [...new Set(post.messages.map(msg => msg.sender.toString()))]
+            .filter(id => id !== userId);
+          chatUsers.forEach(userId => {
+            acc.push({
+              postId: post._id,
+              postTitle: post.title,
+              userId,
+              userName: post.messages.find(msg => msg.sender.toString() === userId)?.sender.name,
+              messages: post.messages.filter(
+                msg => 
+                  (msg.sender.toString() === userId && msg.recipient.toString() === req.user.id) ||
+                  (msg.sender.toString() === req.user.id && msg.recipient.toString() === userId)
+              )
+            });
+          });
+        }
+        return acc;
+      }, []);
+
+      res.json(chats);
+    } catch (e) {
+      console.error("Ошибка при получении чатов:", e);
+      res.status(500).json({ message: "Ошибка сервера" });
+    }
+  }
 }
 
 module.exports = new PostController();
