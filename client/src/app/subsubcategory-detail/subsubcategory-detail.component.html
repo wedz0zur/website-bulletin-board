@@ -70,17 +70,12 @@
           id="price"
           name="price"
           class="form-input"
-          placeholder="Укажите цену"
+          placeholder="Укажите цену в рублях"
           required
           min="0"
           [(ngModel)]="postData.price"
           #price="ngModel"
         />
-        <select id="currency" name="currency" class="form-select currency-select" [(ngModel)]="postData.currency">
-          <option value="RUB">₽</option>
-          <option value="USD">$</option>
-          <option value="EUR">€</option>
-        </select>
         <div *ngIf="price.invalid && price.touched" class="error-text">
           Цена должна быть больше или равна 0
         </div>

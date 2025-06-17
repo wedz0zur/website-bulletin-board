@@ -2,22 +2,35 @@ import { Component, Input } from '@angular/core';
 import { PostService } from '../service/post.service';
 import { Router } from '@angular/router';
 import { TruncatePipe } from '../truncate.pipe';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { FavoritesService } from '../service/favorites.service';
+import { LoginService } from '../service/login.service';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-posts',
-  imports: [TruncatePipe, NgIf],
+  imports: [TruncatePipe, NgIf, CommonModule, FormsModule],
   templateUrl: './posts.component.html',
-  styleUrl: './posts.component.scss',
+  styleUrl: './posts.component.css',
 })
 export class PostsComponent {
   @Input() category: string | null = null;
   posts: any = [];
   favorites: string[] = [];
+  user: any;
 
-  constructor(private postService: PostService, private favoritesService: FavoritesService, private router: Router) {}
+  constructor(private postService: PostService, private loginService: LoginService, private favoritesService: FavoritesService, private router: Router) {}
 
   async ngOnInit() {
+      this.loginService.getProfile().subscribe({
+        next: (res: any) => {
+          this.user = res;
+          console.log(this.user);
+        },
+        error: (error: any) => {
+          console.error('Error fetching profile:', error);
+        },
+      });
+
     const allPosts = await this.postService.getPosts();
     this.posts = this.category
       ? allPosts.filter((post: any) => post.category === this.category)
