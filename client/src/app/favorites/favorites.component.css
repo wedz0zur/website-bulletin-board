@@ -95,6 +95,7 @@
 }
 
 .remove-button {
+  width: 200px;
   margin-top: auto;
   background-color: #00AAFF;
   color: white;
