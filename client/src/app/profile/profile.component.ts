@@ -151,11 +151,13 @@ export class ProfileComponent implements OnInit {
   logout() {
     this.showLogoutModal = true;
   }
+confirmLogout() {
+  this.profile.logout();
+  this.router.navigate(['/home']).then(() => {
+    window.location.reload();
+  });
+}
 
-  confirmLogout() {
-    this.profile.logout();
-    this.router.navigate(['/home']);
-  }
 
   cancelLogout() {
     this.showLogoutModal = false;

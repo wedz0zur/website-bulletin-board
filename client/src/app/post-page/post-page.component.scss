@@ -258,7 +258,7 @@
   margin-top: 30px;
 }
 
-.avito-button {
+.avito-button-send {
   padding: 10px 20px;
   border-radius: 4px;
   font-size: 15px;
@@ -304,11 +304,11 @@
   }
 
   &-save {
-    background-color: #4caf50;
+    background-color: #00aaff;
     color: white;
 
     &:hover {
-      background-color: #3e8e41;
+       background-color: #0099f7;
     }
   }
 }
@@ -823,7 +823,7 @@
 }
 
 .avito-button-send {
-  background: #28a745;
+  background-color: #00aaff;
   color: #fff;
   padding: 8px 15px;
   border: none;
@@ -838,5 +838,6 @@
 }
 
 .avito-button-send:hover:not(:disabled) {
-  background: #218838;
+  background-color: #0099f7;
 }
+

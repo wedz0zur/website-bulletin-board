@@ -101,10 +101,12 @@ export class HeaderComponent {
       this.errorValid = 'Пожалуйста, заполните все поля корректно';
       return;
     }
+
     if (this.userPassword !== this.userCheckPassword) {
       this.errorPassword = 'Пароли должны совпадать';
       return;
     }
+
     if (this.userPassword.length < 6) {
       this.errorPassword = 'Пароль должен быть не менее 6 символов';
       return;
@@ -128,16 +130,44 @@ export class HeaderComponent {
       next: (res: any) => {
         if (res === 'Регистрация прошла успешно') {
           this.showSuccessMessage = true;
-          this.resetForm();
+          this.autoLoginAfterRegistration(this.userLogin, this.userPassword);
+          location.reload();
         } else {
           this.error = 'Не удалось зарегистрировать пользователя';
+          this.isSubmitting = false;
         }
-        this.isSubmitting = false;
       },
       error: (e) => {
         this.error = e.error?.message || 'Ошибка регистрации';
         console.error('HTTP error:', e);
         this.isSubmitting = false;
+      },
+    });
+  }
+  private autoLoginAfterRegistration(login: string, password: string) {
+    const credentials = { userlogin: login, password };
+
+    this.loginService.onLogin(credentials).subscribe({
+      next: (res: any) => {
+        this.isSubmitting = false;
+        this.showSuccessMessage = true;
+
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+        }
+
+        setTimeout(() => {
+          this.router.navigate(['/profile']).then(() => {
+            location.reload();
+          });
+          this.modal = false;
+          this.resetForm();
+        }, 1500);
+      },
+      error: (e: HttpErrorResponse) => {
+        this.isSubmitting = false;
+        this.error = e.error?.message || 'Ошибка автоматического входа';
+        console.error('Ошибка авто-входа:', e);
       },
     });
   }
@@ -180,7 +210,9 @@ export class HeaderComponent {
         }
 
         setTimeout(() => {
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/profile']).then(() => {
+            location.reload();
+          });
         }, 1500);
       },
       error: (e: HttpErrorResponse) => {
